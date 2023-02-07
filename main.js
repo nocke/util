@@ -1,16 +1,14 @@
 #!/usr/bin/env node
 // TODO 'use strict'
-import { execSync } from 'child_process';
+// import { howdy } from "./src/log.js"
 
-export const howdy = function() {
-    const msg = '\nhowdy, npm package! ♥♥♥'
-    console.log(msg)
-    execSync(`notify-send -i info '${msg}' -t 4000`)
-    return;
-};
+export * from "./src/log.js"
+
+export const truth = 88
 
 export default {
-    howdy
+    truth: '42',
+    howdy: '66'
 }
 
 
