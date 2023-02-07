@@ -1,0 +1,25 @@
+{
+  "name": "@nocke/util",
+  "version": "0.0.1",
+  "description": "NodeJS utilities & helpers – logging, asserts, coloring. In particular useful for writing scripts.",
+  "main": "main.js",
+  "bin": {
+    "nockefoo": "./foocmd.js",
+    "nockebar": "./barcmd.js"
+  },
+  "type":"module",
+  "scripts": {
+    "start": "./examples/demo.js",
+    "test": "echo 'Wish there was one'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nocke/util.git"
+  },
+  "author": "",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/nocke/util/issues"
+  },
+  "homepage": "https://github.com/nocke/util#readme"
+}
