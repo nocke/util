@@ -1,11 +1,13 @@
-import { execSync } from 'child_process';
+import { scriptBasename } from "./_common.js";
 
 export const howdy = function() {
-    const msg = '\nhowdy, npm package! ♥♥♥ 1234576'
-    console.log(msg)
-    return;
+    const msg = 'howdy, npm package! ♥♥♥ 1234576 ' + scriptBasename
+    return msg;
 };
 
+export const fruit = 'banana'
+
 export default {
-    howdy
+    howdy,
+    fruit
 }
