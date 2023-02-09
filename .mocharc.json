@@ -1,0 +1,11 @@
+// REF github.com/mochajs/mocha/tree/master/example/config
+// REF github.com/mochajs/mocha/blob/master/example/config/.mocharc.yml
+{
+	"extension": ["js"],
+	"slow": "75",
+	"timeout": "2000",
+  "sort": true,
+  "recursive": true,
+	"watch-files": ["src/**/*.*", "test/**/*.js"],
+  "require": "test/hooksAndHelpers.js"
+}

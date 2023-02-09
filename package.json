@@ -2,29 +2,32 @@
   "name": "@nocke/util",
   "version": "0.0.1",
   "description": "NodeJS utilities & helpers – logging, asserts, coloring. In particular useful for writing scripts.",
-  "main": "main.js",
-  "bin": {
-    "nockefoo": "./foocmd.js",
-    "nockebar": "./barcmd.js"
-  },
-  "type": "module",
-  "scripts": {
-    "start": "./examples/demo.js",
-    "test": "echo 'Wish there was one'"
+  "homepage": "https://github.com/nocke/util#readme",
+  "bugs": {
+    "url": "https://github.com/nocke/util/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nocke/util.git"
   },
-  "author": "Frank Nocke",
   "license": "CC0-1.0",
-  "bugs": {
-    "url": "https://github.com/nocke/util/issues"
+  "author": "Frank Nocke",
+  "type": "module",
+  "main": "main.js",
+  "bin": {
+    "nockebar": "./barcmd.js",
+    "nockefoo": "./foocmd.js"
   },
-  "homepage": "https://github.com/nocke/util#readme",
+  "scripts": {
+    "start": "./examples/demo.js",
+    "test": "mocha --loader=esmock"
+  },
   "devDependencies": {
+    "chai": "^4.3.7",
     "eslint": "^8.33.0",
     "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-unused-imports": "^2.0.0"
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "esmock": "^2.1.0",
+    "mocha": "^10.2.0"
   }
 }

@@ -11,6 +11,9 @@
   "extends": [
     "eslint-config-standard"
   ],
+  "globals": {
+    "autoSuiteName": "readonly"
+  },
   // REF
   // https://github.com/standard/eslint-config-standard/blob/80b9734d817a9babc2d02bb30cfbc98265299a00/.eslintrc.json
   "overrides": [],
