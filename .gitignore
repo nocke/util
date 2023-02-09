@@ -14,6 +14,7 @@ Desktop.ini
 node_modules/
 coverage/
 test_dir*/
+TEMPTEMP*
 
 # symbolic links (Ubuntu default naming) to somewhere
 Link to *

@@ -1,0 +1,121 @@
+'use strict'
+import { execSync } from 'child_process'
+import { ensureTrue, ensureWellFormedUser, fail, pass, validateOptions } from './assert.js'
+import { warn } from './log.js'
+import { trim } from './_common.js'
+import { info } from 'console'
+
+/* WARN: '&>/dev/null' might suppress error codes and wrongly return 0 (wrongly: ok) */
+export const guard = (cmd, config = {}) => {
+  ensureTrue(
+    typeof config !== 'boolean',
+    'forgot to change a mute param `true|false` to config object?'
+  )
+  validateOptions(config, ['mute', 'timeout', 'errMsg'])
+  const mute = config.mute === true
+  const errMsg = !!config.errMsg ? config.errMsg + '\n' : ''
+  const timeout = config.timeout ? config.timeout : 120 * 1000
+  try {
+
+    // nodejs.org/api/child_process.html#child_processexecsynccommand-options
+    const result = execSync(cmd, {
+      stdio: mute ? [] : 'pipe',
+      encoding: 'utf8',
+      // 30 seconds (10 can be too short for luks matters,
+      // and somehow these times are actually ca 5× shorter than specified)
+      timeout
+    }).toString()
+    const trimmedResult = trim(result, '\n')
+    pass(cmd)
+    if (!mute && result !== '' /* avoid moot blank lines */) { info(trimmedResult) }
+    return trimmedResult
+  } catch (error) {
+    // fail will alreadey dump all that. warn(error)
+    fail(
+      'guard() failed',
+              `status: ${error.status}`,
+              `message: ${errMsg}${error.message}`,
+              `stderr: ${error.stderr?.toString()}`,
+              `stdout: ${error.stdout?.toString()}`
+    )
+  }
+}
+
+export const userguard = (user, userCmd, config = {}) => {
+  ensureTrue(
+    config !== true,
+    'forgot to change a mute true to config object'
+  )
+  validateOptions(config, ['mute', 'timeout', 'useSudo'])
+  const useSudo = config.useSudo === true
+
+  ensureWellFormedUser(user)
+
+  // user will have (most of) its typical env varibles
+  // NOTE: user will have it's home dir as current path
+
+  // escape quotes in the command, since it gets put into outer quotes
+  const escapedUserCmd = userCmd.replace(/"/g, '\\"')
+  let cmd
+  if (useSudo) {
+    warn('using `sudo`')
+    // note: might work better without `-i` (on env variables)
+    cmd = `sudo -Hu "${user}" -- sh -c "${escapedUserCmd}"`
+  } else {
+    // single quotes against „premature“ variable substitution
+    // stackoverflow.com/a/50119758
+    cmd = `runuser -l '${user}' -c '${escapedUserCmd}'`
+  }
+  return guard(cmd, config)
+}
+
+/* like guard, except, returns true or false (thus not “enforcing”)
+  NOTE: by default returns error code (not result, like [user]guard())
+  NOTE: on error code: 0 is 'falsy' but means everything is ok,
+  truthy other value if unsucessful
+
+  WARNING: '&>/dev/null' might suppress error codes and wrongly return 0 (everything ok)
+  */
+export const check = (cmd, config = {}) => {
+  ensureTrue(
+    config !== true,
+    'forgot to change a mute true to config object'
+  )
+  validateOptions(config, ['mute', 'timeout', 'getResult'])
+  const mute = config && config.mute ? !!config.mute : false
+  const timeout = config && config.timeout ? config.timeout : 120 * 1000
+  // get result instead of status code
+  const getResult = config && config.getResult === true
+  let result = ''
+  try {
+    result = execSync(cmd, {
+      stdio: mute ? [] : 'pipe',
+      encoding: 'utf8',
+      timeout
+    }).toString()
+    const trimmedResult = trim(result, '\n')
+    if (!mute) {
+      pass(cmd)
+      info('status (pass):', 0)
+      // avoid moot blank lines
+      if (trimmedResult !== '') info(trimmedResult)
+    }
+    if (getResult) return trimmedResult
+    return 0
+  } catch (error) {
+    if (error.code === 'ETIMEDOUT') warn('check: cause was TIMEOUT!')
+    const trimmedResult = trim(result, '\n')
+    if (!mute) {
+      warn('result: ', trimmedResult)
+      warn('cmd:    ', cmd)
+      warn('status: ', error.status) // TEMP
+    }
+    if (getResult) return trimmedResult
+    return error.status
+  }
+}
+
+export default {
+  guard,
+  check
+}
