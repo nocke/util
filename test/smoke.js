@@ -1,9 +1,11 @@
 import { assert } from 'chai'
 
+// ↓ going through main export (not including specifc module) on purpose
+import util, { check, guard } from '../main.js'
+
 /*
     some sanity testing
  */
-
 describe(autoSuiteName(import.meta.url),
   () => {
 
@@ -20,4 +22,9 @@ describe(autoSuiteName(import.meta.url),
       })
     })
 
+    describe('execute something', () => {
+      guard('df', { mute: true })
+      util.guard('ls -l', { mute: true })
+      assert(check('ls nonsenseFolder6170182309', { mute: true }) !== 0)
+    })
   })
