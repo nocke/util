@@ -1,7 +1,15 @@
 {
   "name": "@nocke/util",
   "version": "0.0.1",
-  "description": "NodeJS utilities & helpers – logging, asserts, coloring. In particular useful for writing scripts.",
+  "license": "MIT",
+  "description": "NodeJS utilities and helpers – logging, asserts, coloring. In particular useful for writing scripts.",
+  "type": "module",
+  "author": "Frank Nocke",
+  "scripts": {
+    "start": "./examples/demo.js",
+    "test": "mocha --loader=esmock",
+    "test:loop": "./script/saveloop . clear \"npm t $npm_config_test\""
+  },
   "homepage": "https://github.com/nocke/util#readme",
   "bugs": {
     "url": "https://github.com/nocke/util/issues"
@@ -10,17 +18,10 @@
     "type": "git",
     "url": "git+https://github.com/nocke/util.git"
   },
-  "license": "CC0-1.0",
-  "author": "Frank Nocke",
-  "type": "module",
   "main": "main.js",
   "bin": {
     "nockebar": "./barcmd.js",
     "nockefoo": "./foocmd.js"
-  },
-  "scripts": {
-    "start": "./examples/demo.js",
-    "test": "mocha --loader=esmock"
   },
   "devDependencies": {
     "chai": "^4.3.7",
@@ -29,5 +30,8 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "esmock": "^2.1.0",
     "mocha": "^10.2.0"
+  },
+  "engines": {
+    "node": ">=14"
   }
 }

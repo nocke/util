@@ -16,12 +16,12 @@ export const applyDconf = async(user, dconfFile) => {
   if (userIsLoggedIn(user)) {
     info(`dconf for logged-in user ${user}`)
     const xDispEnv = `DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${userID}/bus`
-    guard(`${xDispEnv} su -c "./helper/executeDConfNonSudo.sh ${dconfFile}" ${user}`)
+    guard(`${xDispEnv} su -c "./script/executeDConfNonSudo.sh ${dconfFile}" ${user}`)
   } else {
     info(`dconf for logged-out user ${user}`)
     guard('xhost +')
     const xDispEnv = `export HOME=/home/${user}; export DISPLAY=localhost:0; NO_AT_BRIDGE=1;`
-    guard(`${xDispEnv} su -c "dbus-launch ./helper/executeDConfNonSudo.sh ${dconfFile}" ${user}`)
+    guard(`${xDispEnv} su -c "dbus-launch ./script/executeDConfNonSudo.sh ${dconfFile}" ${user}`)
     guard('xhost -')
   }
   await sleep(200)

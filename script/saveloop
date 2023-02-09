@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# NOTE: not fit for samba drives (timestamp issue, no inotifywait support → use saveloop 2)
+
+# examples:
+# single file:
+#  ./helper/saveloop 03_packages.js "sudo ./03_packages.js"
+#
+# entire folder:
+#  ./helper/saveloop . "clear && sudo ./03_packages.js"
+#       or
+#  ./helper/saveloop . "clear" "sudo ./03_packages.js"
+#
+# NOTE: you will run out of handles, if that
+#       includes a node_modules
+#
+# with clear before:
+#  ./helper/saveloop . "clear" "sudo ./03_packages.js"
+
+# REF https://superuser.com/a/181543
+# REF https://gist.github.com/metaphox/74b2b10a0571a4c30fd14fa004c49eae
+# REF while inotifywait -q -e close_write .gitalias; do git share2; done
+
+if [[ "$#" -lt 2 ]]; then
+	echo ""
+	echo -e "\e[91;48;5;52m  usage: <watchfile> <execution script> ✗✗✗\e[0m"
+	echo -e "example: saveloop <watchfile-or-dir>  \"foo param1 param2\" [\"command2\"] [\"command3\"]"
+	echo -e "(node_modules within a watchdir won't be watched)"
+	exit
+fi
+
+if [[ ! -e "$1" ]]; then
+  echo -e "\e[91;48;5;52m  to be watched file/folder '$1' does not exist ✗✗✗\e[0m"
+fi
+
+# mind the non-quotation on $2 (on purpose)
+# --recursive
+echo 'watching.... (saveloop variant 1)'
+# do once before (everyone expects that)
+$2;$3;$4;
+
+# mind the non-quotation on $2 (on purpose)
+while inotifywait -rqq -e close_write --exclude 'node_modules' "$1"; do $2;$3;$4; done
