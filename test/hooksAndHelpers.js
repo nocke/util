@@ -5,7 +5,7 @@ global.autoSuiteName = (name) => name.split('/test/', 2)[1]
 global.captureStream = (stream) => {
   const oldWrite = stream.write
   let buf = ''
-  stream.write = function(chunk, encoding, callback) {
+  stream.write = function(chunk /*, encoding, callback */) {
     buf += chunk.toString() // chunk is a String or Buffer
     oldWrite.apply(stream, arguments)
   }
@@ -17,5 +17,14 @@ global.captureStream = (stream) => {
     captured: function() {
       return buf
     }
+  }
+}
+
+export const mochaHooks = {
+  beforeEach(done) {
+    if (this.currentTest.type === 'test') {
+      console.log(('\n'+this.currentTest.title+' ').padEnd(80, '_'))
+    }
+    done()
   }
 }
