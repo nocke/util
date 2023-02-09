@@ -8,6 +8,12 @@ import { check } from './execute.js'
 // (i.e. matching imported modules)
 
 const literalSerialize = (l) => {
+  if (!!l.name) return l.name + '(class)' // return class
+  if (
+    !!l.constructor?.name &&
+    !['Number', 'Boolean', 'String', 'RegExp', 'Function'].includes(l.constructor.name)) {
+    return l.constructor.name + '(instance)' // return class
+  }
   const ltype = typeof l
   if (l === null) return '<null>'
   if (Array.isArray(l)) return '[…array…]'
@@ -29,23 +35,36 @@ export const serializeMsg = (args) =>
       const mtype = typeof m
       if (mtype === 'string') { return m.toString() } // prevent non-nested strings from getting quotes
       if (m instanceof RegExp) { return literalSerialize(m) }
-      if (Array.isArray(m)) { return '[' + m.map(subSerialize).join(', ') + ']' }
+
+      if (Array.isArray(m) && m.length === 0) { return '[]' }
+      // COULDDO: short arrays as one-liner
+      if (Array.isArray(m)) {
+        return '\n[\n    ' + m.map(subSerialize).join(',\n    ') + '\n]\n'
+      }
+
       if (m === null) return '<null>' // because typeof null === 'object'
-      if (mtype === 'object' && Object.entries(m).length === 0) { return '{}' } // empty object
+
+      // class instances as 'special object'
+      let instanceName = m.constructor?.name ?? ''
+      if (instanceName === 'Object') instanceName = ''
+
+      // empty object
+      if (mtype === 'object' && Object.entries(m).length === 0) { return instanceName + '{}' }
       if (mtype === 'object') {
+        // COULDDO: short arrays as one-liner
         const keys = Object.keys(m)
         return (
           keys.reduce(
             (out, key, idx) =>
               out + `    ${key}: ${subSerialize(m[key])}${keys.length - 1 > idx ? ',' : ''}\n`,
-            '\n  {\n'
-          ) + '  }'
+            `\n${instanceName}{\n`
+          ) + '}\n'
         )
       }
       return literalSerialize(m)
     })
     .join(' ')
-    .toString()
+    .replace(/\n\s\n?/g, '\n')
 
 // ===========================================================
 // logging and asserts
@@ -54,7 +73,7 @@ export const serializeMsg = (args) =>
 
 export const clear = '\u001b[2J\u001b[H'
 
-// TODO?: will wrap and then lead to inner non-searializing (<purpleEsc>[Object] [Object]</purpleEsc)
+// TODO?: will wrap and then lead to inner non-serializing (<purpleEsc>[Object] [Object]</purpleEsc)
 // perhaps rather pass down a 'magic' token prepended first param down the line, that THEN leads to wrapping
 // in serializeMsg() ?
 // TODO, make it work with multiple parts: warn(purple(`core: ${core}`, family, 'OO'))

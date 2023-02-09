@@ -69,7 +69,7 @@ describe(autoSuiteName(import.meta.url),
 
     })
 
-    it('check for direct <-> default differences (including new functions)', () => {
+    it('check for any direct <-> default differences (including new functions)', () => {
       const allExports = Object.keys(Object.assign({}, existingExports, existingExports.default)).filter(k => !['default', 'argv'].includes(k)).sort()
       // DEBUG console.log(allExports)
       allExports.forEach(e => {
