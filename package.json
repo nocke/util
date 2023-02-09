@@ -7,7 +7,7 @@
     "nockefoo": "./foocmd.js",
     "nockebar": "./barcmd.js"
   },
-  "type":"module",
+  "type": "module",
   "scripts": {
     "start": "./examples/demo.js",
     "test": "echo 'Wish there was one'"
@@ -16,10 +16,15 @@
     "type": "git",
     "url": "git+https://github.com/nocke/util.git"
   },
-  "author": "",
+  "author": "Frank Nocke",
   "license": "CC0-1.0",
   "bugs": {
     "url": "https://github.com/nocke/util/issues"
   },
-  "homepage": "https://github.com/nocke/util#readme"
+  "homepage": "https://github.com/nocke/util#readme",
+  "devDependencies": {
+    "eslint": "^8.33.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-unused-imports": "^2.0.0"
+  }
 }
