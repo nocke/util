@@ -33,7 +33,7 @@ remember to adjust rights, depending on users or shared dir
 
 has some 'commonize' qualities
  */
-const groomDestPath = (filePath) => {
+export const groomDestPath = (filePath) => {
   // some sanity checking on path to avoid damage
   // TODO  how does this handle relative paths?
   // TODO  turned into absolute before groom checks?

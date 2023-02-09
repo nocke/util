@@ -8,10 +8,10 @@
  */
 
 import path from 'path'
-import { important, info } from './log'
-import { ensureTrue, ensureWellFormedUser } from './assert'
+import { important, info } from './log.js'
+import { ensureTrue, ensureWellFormedUser } from './assert.js'
 import { fail } from 'assert'
-import { check } from './execute'
+import { check } from './execute.js'
 
 // TEMPTEMP REF
 // import fs, { existsSync } from 'fs'
@@ -32,14 +32,14 @@ export const argv = process.argv.slice(2)
 export const isWindows = process.platform === 'win32'
 
 // detect if running as root
-const isRoot = process.getuid() === 0 // UID 0 is always root
+export const isRoot = process.getuid() === 0 // UID 0 is always root
 // info(isRoot ? 'RUNNING AS: ROOT' : 'running as: normal user')
 if (isRoot) {
   important('RUNNING AS: ROOT')
 }
 
 // Symbols
-const symbols = {
+export const symbols = {
   ok: isWindows ? '\u221A' : '✓',
   tripleCross: isWindows ? '\u00D7\u00D7\u00D7' : '✗✗✗'
 }
@@ -134,10 +134,14 @@ export default {
   scriptBasename,
   scriptDir,
   argv,
+  trim,
+  isRoot,
   isWindows,
   symbols,
   xor,
   ucFirst,
   sleep,
-  userIsLoggedIn
+  iterate,
+  userIsLoggedIn,
+  getIsoDateAndTime
 }

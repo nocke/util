@@ -1,9 +1,8 @@
 'use strict'
 import fs from 'fs'
 import { exec } from 'child_process'
-import { symbols } from './common.js'
 import { serializeMsg } from './log.js'
-import { isWindows } from './_common.js'
+import { isWindows, symbols } from './_common.js'
 import { check } from './execute.js'
 
 // make Errors a bit more specific (also in stacktrace)
@@ -190,6 +189,8 @@ export default {
   ensureFolderExists,
   ensureFileOrFolderExists,
   ensureFileOrFolderOrLinkExists,
+
+  ensureRoot,
 
   ensureWellFormedUser,
   ensureValidURL,

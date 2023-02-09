@@ -21,4 +21,3 @@ describe(autoSuiteName(import.meta.url),
     })
 
   })
-autoSuiteName(import.meta.url)

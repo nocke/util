@@ -117,5 +117,6 @@ export const check = (cmd, config = {}) => {
 
 export default {
   guard,
+  userguard,
   check
 }

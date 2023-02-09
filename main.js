@@ -1,19 +1,34 @@
 #!/usr/bin/env node
-// TODO 'use strict'
-// import { howdy } from "./src/log.js"
+'use strict'
 
-import common from './src/_common.js'
+import _common from './src/_common.js'
 import log from './src/log.js'
 import assert from './src/assert.js'
+import execute from './src/execute.js'
+import wrap from './src/wrap.js'
+import ioUtils from './src/ioUtils.js'
+import dconfUtils from './src/dconfUtils.js'
+import fileUtils from './src/fileUtils.js'
+import gitUtils from './src/gitUtils.js'
 
 export * from './src/_common.js'
 export * from './src/log.js'
 export * from './src/assert.js'
+export * from './src/execute.js'
+export * from './src/wrap.js'
+export * from './src/ioUtils.js'
+export * from './src/dconfUtils.js'
+export * from './src/fileUtils.js'
+export * from './src/gitUtils.js'
 
-export const truth = 88
 export default {
-  ...common,
+  ..._common,
   ...log,
   ...assert,
-  truth
+  ...execute,
+  ...wrap,
+  ...ioUtils,
+  ...dconfUtils,
+  ...fileUtils,
+  ...gitUtils
 }

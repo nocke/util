@@ -1,7 +1,7 @@
 'use strict'
 import { exec } from 'child_process'
-import { scriptBasename, scriptPath } from './_common'
-import { check } from './execute'
+import { scriptBasename, scriptPath } from './_common.js'
+import { check } from './execute.js'
 
 // properly stringify objects ( [Object][Object] is helping noone)
 // NOTE `typeof m === 'object'` is a much broader selection than `m typeof object`!
@@ -23,7 +23,7 @@ const subSerialize = (s) =>
     : literalSerialize(s)
 
 // this function may look more than Confucian, but it is sheer assembled wisdom 😬
-const serializeMsg = (args) =>
+export const serializeMsg = (args) =>
   args
     .map((m) => {
       const mtype = typeof m
@@ -92,7 +92,7 @@ export const superLog = (...msg) => {
 * this is a bad (way too usecase-specific) function, TODO to be remove!
 *
 */
-const worthySuperlog = /\/barejs\/\d{1,3}\D[^\d\.]*\.js/i
+export const worthySuperlog = /\/barejs\/\d{1,3}\D[^\d\.]*\.js/i
 export const loggedMainWrap = (main) => {
   const padWidth = 60
 
@@ -128,6 +128,7 @@ export const loggedMainWrap = (main) => {
 }
 
 export default {
+  serializeMsg,
   clear,
   red,
   green,
@@ -137,6 +138,7 @@ export default {
   info,
   warn,
   important,
+  loggedMainWrap,
   superLog,
   worthySuperlog
 }
