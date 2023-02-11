@@ -10,6 +10,15 @@
     "test": "mocha --loader=esmock",
     "test:loop": "./script/saveloop . clear \"npm t $npm_config_test\""
   },
+  "keywords": [
+    "nodejs",
+    "cli",
+    "util",
+    "dconf",
+    "asserts",
+    "logging",
+    "scripts"
+  ],
   "homepage": "https://github.com/nocke/util#readme",
   "bugs": {
     "url": "https://github.com/nocke/util/issues"
