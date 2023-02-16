@@ -10,12 +10,10 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: fance name for checkout
-        uses: actions/checkout@v3
-      - name: npm ci
-        run: npm ci
-      - name: running esLint
-        run: npm run lint
+      - uses: actions/checkout@v3
+      - run: npm i
+        name: npm i (yes, just install, no ci<->no package-lock.json)
+      - run: npm run lint
 
   build:
     runs-on: ubuntu-latest
@@ -31,7 +29,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
+      - name: npm i (yes, just install, no package-lock.json)
+        run: npm i
       - run: npm test
 # REF test comment
 
