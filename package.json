@@ -10,7 +10,7 @@
     "start": "./examples/demo.js",
     "test": "mocha --loader=esmock",
     "test:loop": "./script/saveloop . clear \"npm t $npm_config_test\"",
-    "lint": "eslint src/**/*.js test/**/*.js"
+    "lint": "eslint"
   },
   "keywords": [
     "nodejs",
@@ -30,10 +30,6 @@
     "url": "git+https://github.com/nocke/util.git"
   },
   "main": "main.js",
-  "bin": {
-    "nockebar": "./barcmd.js",
-    "nockefoo": "./foocmd.js"
-  },
   "devDependencies": {
     "chai": "^4.3.7",
     "eslint": "^8.34.0",
