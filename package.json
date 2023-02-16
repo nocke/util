@@ -10,7 +10,7 @@
     "start": "./examples/demo.js",
     "test": "mocha --loader=esmock",
     "test:loop": "./script/saveloop . clear \"npm t $npm_config_test\"",
-    "lint": "eslint"
+    "lint": "eslint src test"
   },
   "keywords": [
     "nodejs",

@@ -89,7 +89,7 @@ export const ensureFileExists = (path, ...msg) => {
   )
 }
 
-// TODO: was   ensureFolderExists
+// Note: was ensureDirExists
 export const ensureFolderExists = (path, ...msg) => {
   ensureTrue(
     fs.existsSync(path),
