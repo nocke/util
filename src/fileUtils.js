@@ -232,6 +232,7 @@ export const fileHasSnippet = (file, snippet) => {
   return check(`grep -c "${snippet}" "${file}"`, { mute: true }) === 0
 }
 
+var banana
 
 export default {
   getDiskUsageInfo,

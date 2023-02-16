@@ -1,0 +1,37 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: fance name for checkout
+        uses: actions/checkout@v3
+      - name: npm ci
+        run: npm ci
+      - name: running esLint
+        run: npm run lint
+
+  build:
+    runs-on: ubuntu-latest
+    #test comment
+
+    strategy:
+      matrix:
+        node-version: [16.x, 19.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm test
+# REF test comment
+

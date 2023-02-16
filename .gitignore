@@ -30,6 +30,8 @@ package-lock.json
 !.mocha*
 !.gitignore
 !.editorconfig
+# github workflows
+!.github
 
 # permit specific vscode settings (stackoverflow.com/a/5534865/444255)
 !.vscode
