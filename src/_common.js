@@ -1,5 +1,6 @@
+'use strict'
 /**
- TEMPTEMP 'use strict'
+ TEMPTEMP
  * general NodeJS Javascript utility stuff (not specific to bare)
  * TODO distinct, published module
  * TODO split into files
