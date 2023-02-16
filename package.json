@@ -10,7 +10,7 @@
     "start": "./examples/demo.js",
     "test": "mocha --loader=esmock",
     "test:loop": "./script/saveloop . clear \"npm t $npm_config_test\"",
-    "lint": "eslint"
+    "lint": "eslint src test"
   },
   "keywords": [
     "nodejs",
@@ -39,6 +39,13 @@
     "mocha": "^10.2.0",
     "rimraf": "^4.1.2"
   },
+  "resolutions": {
+    "esquery": "1.4.0"
+  },
+  "//": [
+    " ↑ this is adressing a very current bug in a eslint dependency",
+    " REF https://github.com/eslint/eslint/issues/16896 "
+  ],
   "engines": {
     "node": ">=14"
   }
