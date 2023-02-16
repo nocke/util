@@ -109,7 +109,6 @@ export const writeFile = (filePath, ...lines) => {
 }
 
 
-
 export const getFolderSize = (filePath, size = 'B' /* 'B','K' 'M' 'G' */) => {
   ensureFolderExists(filePath)
   ensureTrue(lstatSync(filePath).isDirectory(), 'getFolderSize: not a folder')
@@ -120,7 +119,6 @@ export const getFolderSize = (filePath, size = 'B' /* 'B','K' 'M' 'G' */) => {
   ensureTrue(!Number.isNaN(num))
   return num
 }
-
 
 
 export const rsyncFolder = (src, dest, config = {}) => {

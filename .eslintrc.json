@@ -31,7 +31,7 @@
     "no-multiple-empty-lines": [
       "error",
       {
-        "max": 3,
+        "max": 2,
         "maxEOF": 0
       }
     ],
