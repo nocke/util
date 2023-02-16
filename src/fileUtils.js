@@ -94,6 +94,9 @@ export const commonize = (dirPath) => {
   // Ende wird zu    /-->  '\;''
 }
 
+export const isFile = (path) => lstatSync(path).isFile()
+export const isFolder = (path) => lstatSync(path).isFolder()
+export const isLink = (path) => lstatSync(path).isSymbolicLink()
 
 export const writeFile = (filePath, ...lines) => {
   const { _root, _dir, _base, _ext, user, group } = groomDestPath(filePath)
@@ -236,6 +239,10 @@ export default {
   commonize,
   writeFile,
   getFolderSize,
+
+  isFile,
+  isFolder,
+  isLink,
 
   rsyncFolder,
   fileCopy,

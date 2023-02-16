@@ -24,7 +24,7 @@ describe(autoSuiteName(import.meta.url),
       important([{ the: 'quick' }, 'brown', ['fox'], 'jumps'])
     })
 
-    it.only('outputting classes and instances', () => {
+    it('outputting classes and instances', () => {
 
       info(1, 'A', true, [], {}, () => {}, /regExp/)
       info('-----')
