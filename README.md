@@ -1,5 +1,13 @@
 # README
 
+## status
+
+[![](https://github.com/nocke/util/actions/workflows/ci.yml/badge.svg)](https://github.com/nocke/util/actions/workflows/ci.yml?query=branch%3Amaster)
+[![](https://shields.io/badge/license-MIT-green)](./package.json)
+[![](https://img.shields.io/static/v1?label=dependencies%20(without%20dev%20dependencies)&message=0&color=brightgreen&style=flat&logo=)](./package.json)
+
+## description
+
 **@nocke/util** a collection of opinionated Utilties to facilitate the writing of NodeJS local machine resp. server-side scripting, in particular typical „bash-like“ helper, automation and setup scripts.
 
 Originally written for a series of `barejs` setup script
