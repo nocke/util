@@ -1,0 +1,16 @@
+# tests
+test
+.mocharc*
+
+# ci
+.github/*
+
+# examples
+examples
+
+# linter and formatting
+.editorconfig
+.eslintrc*
+
+# editor settings
+.vscode
