@@ -23,7 +23,7 @@ global.captureStream = (stream) => {
 export const mochaHooks = {
   beforeEach(done) {
     if (this.currentTest.type === 'test') {
-      console.log(('\n'+this.currentTest.title+' ').padEnd(80, '_'))
+      console.log(('\n' + this.currentTest.title + ' ').padEnd(80, '_'))
     }
     done()
   }

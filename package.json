@@ -1,6 +1,6 @@
 {
   "name": "@nocke/util",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "description": "NodeJS utilities and helpers – logging, asserts, coloring. In particular useful for writing scripts.",
   "type": "module",
@@ -8,7 +8,8 @@
   "scripts": {
     "start": "./examples/demo.js",
     "test": "mocha --loader=esmock",
-    "test:loop": "./script/saveloop . clear \"npm t $npm_config_test\""
+    "test:loop": "./script/saveloop . clear \"npm t $npm_config_test\"",
+    "lint": "eslint . --ext .js"
   },
   "keywords": [
     "nodejs",

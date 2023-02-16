@@ -111,7 +111,7 @@ export const superLog = (...msg) => {
 * this is a bad (way too usecase-specific) function, TODO to be remove!
 *
 */
-export const worthySuperlog = /\/barejs\/\d{1,3}\D[^\d\.]*\.js/i
+export const worthySuperlog = /\/barejs\/\d{1,3}\D[^\d.]*\.js/i
 export const loggedMainWrap = (main) => {
   const padWidth = 60
 

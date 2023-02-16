@@ -89,16 +89,16 @@ export const ensureFileExists = (path, ...msg) => {
   )
 }
 
-// TODO: was   ensureDirExists
+// TODO: was   ensureFolderExists
 export const ensureFolderExists = (path, ...msg) => {
   ensureTrue(
     fs.existsSync(path),
-            `ensureDirExists: no such directory '${path}'`,
+            `ensureFolderExists: no such directory '${path}'`,
             ...msg
   )
   ensureTrue(
     fs.lstatSync(path).isDirectory(),
-            `ensureDirExists: '${path}' is a file, not a directory)`,
+            `ensureFolderExists: '${path}' is a file, not a directory)`,
             ...msg
   )
 }
@@ -137,9 +137,8 @@ export const ensureRoot = () => {
   }
 }
 
+const validURL = /^(http[s]?:\/\/(www\.)?|ftp:\/\/(www\.)?|www\.){1}([0-9A-Za-z-.@:%_+~#=]+)+((\.[a-zA-Z]{2,3})+)(\/(.*))?(\?(.*))?/
 
-// const validURL = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?(#.*)?$/;
-const validURL = new RegExp('^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?')
 export const ensureValidURL = (url) => {
   ensureTrue(validURL.test(url), `url '${url}' seems not to be a valid url`)
 }

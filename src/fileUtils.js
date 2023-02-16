@@ -1,7 +1,10 @@
 'use strict'
-
-import { ensureEqual, ensureTrue } from './assert.js'
-import { guard } from './execute.js'
+import path from 'path'
+import { appendFileSync, existsSync, lstatSync, writeFileSync } from 'fs'
+import { ensureEqual, ensureFileExists, ensureFolderExists, ensureTrue, pass, validateOptions } from './assert.js'
+import { check, guard } from './execute.js'
+import { isWindows, trim } from './_common.js'
+import { info, warn } from './log.js'
 
 /* returns free space on '/' as a number in Megabytews
  */
@@ -24,8 +27,6 @@ export const getDiskUsageInfo = () => {
   )
   return r
 }
-
-
 
 /* some asserting if a good, harmless destination path
 ...including user of homeDir ('root' otherwise)
@@ -79,7 +80,7 @@ export const groomDestPath = (filePath) => {
 }
 
 export const commonize = (dirPath) => {
-  ensureDirExists(dirPath, `'${dirPath}' does not exist`)
+  ensureFolderExists(dirPath, `'${dirPath}' does not exist`)
   ensureTrue(groomDestPath(dirPath).group === 'common')
 
   guard(`chown -R root:common ${dirPath}`)
@@ -89,17 +90,17 @@ export const commonize = (dirPath) => {
 
   // since there is no such thing as an uppercase S (directories only)
   // settings static has to happen separately serverfault.com/a/649101/
-  guard(`find '${dirPath}' -type d -exec chmod g+s {} \\\;`)
+  guard(`find '${dirPath}' -type d -exec chmod g+s {} \\;`)
   // Ende wird zu    /-->  '\;''
 }
 
 
 export const writeFile = (filePath, ...lines) => {
-  const { root, dir, base, ext, user, group } = groomDestPath(filePath)
+  const { _root, _dir, _base, _ext, user, group } = groomDestPath(filePath)
 
-  fs.writeFileSync(filePath, '')
+  writeFileSync(filePath, '')
   for (const line of lines) {
-    fs.appendFileSync(filePath, line + '\n')
+    appendFileSync(filePath, line + '\n')
   }
 
   pass(`file '${filePath}' written`)
@@ -110,8 +111,8 @@ export const writeFile = (filePath, ...lines) => {
 
 
 export const getFolderSize = (filePath, size = 'B' /* 'B','K' 'M' 'G' */) => {
-  ensureDirExists(filePath)
-  ensureTrue(fs.lstatSync(filePath).isDirectory(), 'getFolderSize: not a folder')
+  ensureFolderExists(filePath)
+  ensureTrue(lstatSync(filePath).isDirectory(), 'getFolderSize: not a folder')
   ensureTrue(['B', 'K', 'M', 'G'].includes(size))
 
   const stringResult = guard(`du -s '${filePath}' ${size === 'B' ? '-b' : '-B' + size} | grep -E -o ^[0-9]+`)
@@ -142,7 +143,7 @@ export const rsyncFolder = (src, dest, config = {}) => {
           `dest MUST NOT have trailing slash, '${src}' does not`
   )
 
-  const { root, dir, base, ext, user, group } = groomDestPath(dest)
+  const { _root, _dir, _base, _ext, user, group } = groomDestPath(dest)
   ensureTrue(!rootMode || group === 'common' || group === 'root', 'no rootMode in home-Folders...')
 
   guard(`rsync --progress --force -Ir ${forwardDelete} ${archiveMode} ${src} ${dest}`, { timeout })
@@ -163,7 +164,7 @@ export const rsyncFolder = (src, dest, config = {}) => {
    */
 export const fileCopy = (src, dest, config = {}) => {
   const commonMode = config && config.common === true
-  const { root, dir, base, ext, user, group } = groomDestPath(dest)
+  const { _root, _dir, _base, _ext, user, group } = groomDestPath(dest)
   guard(`cp -f '${src}' '${dest}'`)
 
   // adjust rights, depending on user / or shared dir  ( -R 2× removed)
@@ -179,8 +180,8 @@ export const makeDirs = (...dirsAndOptions) => {
   let config = {}
   const lastArg = dirsAndOptions[dirsAndOptions.length - 1]
 
-  if (typeof lastArg === 'object') // is last one a config object? (not a string)
-  { // then use it so
+  if (typeof lastArg === 'object') { // is last one a config object? (not a string)
+    // then use it so
     config = lastArg
     dirPaths = dirsAndOptions.slice(0, -1)
   } else { // otherwise just prepend to dirPaths
@@ -193,20 +194,20 @@ export const makeDirs = (...dirsAndOptions) => {
 
   if (isWindows) {
     // Windows fork  (no path grooming, no rights assignment here)
-    dirPaths.map((rawPath) => {
+    dirPaths.forEach((rawPath) => {
       const dirPath = path.normalize(rawPath) // 'fix' slashes to backslash
-      if (!fs.existsSync(dirPath)) {
+      if (!existsSync(dirPath)) {
         guard(`MKDIR "${dirPath}"`)
       } else {
         pass(`ensured dir '${dirPath}' exists`)
       }
     })
   } else {
-    // Linux fork
-    dirPaths.map((dirPath) => {
-      const { root, dir, base, ext, user, group } = groomDestPath(dirPath)
+    // Linux fork  TODO test that foreach instead of map ok  (map wanted a return)
+    dirPaths.foreach(dirPath => {
+      const { _root, _dir, _base, _ext, user, group } = groomDestPath(dirPath)
 
-      if (!fs.existsSync(dirPath)) {
+      if (!existsSync(dirPath)) {
         guard(`mkdir -p '${dirPath}'`)
       } else {
         info(`ensured dir '${dirPath}' exists`)

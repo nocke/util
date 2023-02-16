@@ -116,7 +116,7 @@ export const iterate = (...argsAndFn) => {
 
 export const userIsLoggedIn = (user) => {
   ensureWellFormedUser(user)
-  return (check(`who -u | grep "${user}"`, { mute: true }) == 0)
+  return (check(`who -u | grep "${user}"`, { mute: true }) === 0)
 }
 
 export const getIsoDateAndTime = () => {
