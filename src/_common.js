@@ -1,9 +1,6 @@
 'use strict'
 /**
- TEMPTEMP
  * general NodeJS Javascript utility stuff (not specific to bare)
- * TODO distinct, published module
- * TODO split into files
  * TODO mocha testing
  * TODO logging with channel concept
  */
@@ -13,15 +10,6 @@ import { important, info } from './log.js'
 import { ensureTrue, ensureWellFormedUser } from './assert.js'
 import { fail } from 'assert'
 import { check } from './execute.js'
-
-// TEMPTEMP REF
-// import fs, { existsSync } from 'fs'
-// import path from 'path'
-// import { exec, execSync } from 'child_process'
-// import readline from 'readline'
-
-
-console.log('############## common called ######################')
 
 // name+path of calling script
 export const scriptPath = process.argv[1]
