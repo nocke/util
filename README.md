@@ -4,7 +4,7 @@
 
 # @nocke/util
 
-A zero-dependency collection of opinionated utility functions to simplify the writing of „bash-like“ (or rather: bash-replacing) NodeJS scripts for your local machine (respectively: server-side scripting).
+A zero-dependency collection of utility functions to simplify the writing of typical „bash-like“ (or rather: bash-replacing) NodeJS scripts for your local machine (respectively: server-side scripting).
 
 Originally written for a series of `barejs` setup scripts, for a full range of „secondary system setup“ on fresh Ubuntu-MATE machines. Now also used in my [photo organizing cli commands](https://github.com/nocke/photo).
 
@@ -12,7 +12,7 @@ Originally written for a series of `barejs` setup scripts, for a full range of �
 * all NodeJS, all ES6
 * no Common JS, no Typescript, no transpilation
 * async as much as possible
-* strong emphasis on fast-fail behaviour
+* strong emphasis on fast-fail behaviour (plenty of asserts, called „ensure“)
 
 ## Areas covered:
 
@@ -20,7 +20,7 @@ Originally written for a series of `barejs` setup scripts, for a full range of �
 * **[Asserts](./src/assert.js):** All kinds of useful asserts. _Not_ meant for testing but for easier, better fast-fail-behaviour and clearer error reporting at runtime
 * **[Executions](./src/execute.js):** Execution of binaries aka linux commands. Yes, at its heart this is no more than NodeJS' usual `execSync`, but with some convenience on stdout, returned strings and error codes and assertion, if desired
 * **[FileUtils](./src/fileUtils.js):** write complete files with a single command, rsync directories, be more cautious on ensuring paths are user-intended, quickly check files on the existence of snippets...
-* **[GitUtils](./src/gitUtils.js):** Well, so far there's just one wrapper to obtain and ensure git properties
+* **[GitUtils](./src/gitUtils.js):** Well, so far there's just one wrapper to obtain (and usually verify) git properties
 * **[DconfUtils](./src/dconfUtils.js):** Writing registry data to Linux dconf registry was vital to me for system setup scripts (and is trickier than you might think)
 * **[ioUtils](./src/ioUtils.js):** Reading one line of input in NodeJS sadly requires a few more lines of NodeJS source code... here they are.
 
@@ -47,5 +47,4 @@ import { purple, info, warn } from '@nocke/util'
 info(`hello`, ...)
 ```
 
-Personally I favor the latter.
-There is actually [a test](test/properExports.js#L72) to ensure, I did not forget a singular or group export.
+Personally, I favor the latter for simplicity in what follows. Btw: there is actually [a test](test/properExports.js#L72) to ensure, I did not forget an export on either singular or grouped export („default“) side.
