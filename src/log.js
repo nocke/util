@@ -32,6 +32,9 @@ const subSerialize = (s) =>
 export const serializeMsg = (args) =>
   args
     .map((m) => {
+      if (m === null) return '<null>' // sort out beforehand, because typeof null === 'object'
+      if (m === undefined) return '<undefined>'
+
       const mtype = typeof m
       if (mtype === 'string') { return m.toString() } // prevent non-nested strings from getting quotes
       if (m instanceof RegExp) { return literalSerialize(m) }
@@ -41,8 +44,6 @@ export const serializeMsg = (args) =>
       if (Array.isArray(m)) {
         return '\n[\n    ' + m.map(subSerialize).join(',\n    ') + '\n]\n'
       }
-
-      if (m === null) return '<null>' // because typeof null === 'object'
 
       // class instances as 'special object'
       let instanceName = m.constructor?.name ?? ''
