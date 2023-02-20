@@ -1,7 +1,6 @@
 'use strict'
 
 import readline from 'readline'
-import { warn } from './log.js'
 
 export const getInput = async(
   msg /* COULDDO: , wipeout=false, hash=undefined */
@@ -24,7 +23,6 @@ export const getInput = async(
 //
 // @returns '' if no key pressed, key character otherwise
 export const sleepWithKeypress = async(ms) => new Promise(resolve => {
-
   const timer = setTimeout(() => {
     rl.close()
     resolve('')
@@ -38,14 +36,9 @@ export const sleepWithKeypress = async(ms) => new Promise(resolve => {
   })
   readline.emitKeypressEvents(process.stdin) // needed.
 
-  process.stdin.on('data', function(data) {
-    console.log('recieved ' + data)
-  })
-
   process.stdin.on('keypress', (char, _key) => {
     clearTimeout(timer)
     rl.close()
-    warn('key pressed')
     resolve(char)
   })
 })
