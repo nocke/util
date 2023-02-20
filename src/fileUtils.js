@@ -99,7 +99,7 @@ export const isFolder = (path) => lstatSync(path).isFolder()
 export const isLink = (path) => lstatSync(path).isSymbolicLink()
 
 export const writeFile = (filePath, ...lines) => {
-  const { _root, _dir, _base, _ext, user, group } = groomDestPath(filePath)
+  const { /* _root, _dir, _base, _ext, */ user, group } = groomDestPath(filePath)
 
   writeFileSync(filePath, '')
   for (const line of lines) {
