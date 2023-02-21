@@ -6,7 +6,13 @@ import { isWindows, symbols } from './_common.js'
 import { check } from './execute.js'
 
 // make Errors a bit more specific (also in stacktrace)
-export class FailError extends Error {}
+export class FailError extends Error {
+  constructor(message) {
+    super(message)
+    this.name = 'FailError'
+    // this.channel = 'logging' // Example custom property
+  }
+}
 
 export const pass = (...msg) => {
   console.log(
