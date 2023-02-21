@@ -8,6 +8,8 @@ import { check } from './execute.js'
 // (i.e. matching imported modules)
 
 const literalSerialize = (l) => {
+  if (l === null) return '<null>'
+  if (l === undefined) return '<undefined>'
   if (!!l.name) return l.name + '(class)' // return class
   if (
     !!l.constructor?.name &&
@@ -15,7 +17,6 @@ const literalSerialize = (l) => {
     return l.constructor.name + '(instance)' // return class
   }
   const ltype = typeof l
-  if (l === null) return '<null>'
   if (Array.isArray(l)) return '[…array…]'
   if (l instanceof RegExp) return l
   if (ltype === 'string') return '\'' + l + '\''
