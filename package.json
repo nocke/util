@@ -1,6 +1,6 @@
 {
   "name": "@nocke/util",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "MIT",
   "description": "NodeJS utilities and helpers – logging, asserts, coloring. In particular useful for writing scripts.",
   "type": "module",
