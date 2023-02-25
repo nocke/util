@@ -2,7 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
+      - 'fiddl*'
   pull_request:
     branches: [master]
 
@@ -14,6 +16,20 @@ jobs:
       - run: npm i
         name: npm i (yes, just install, no ci<->no package-lock.json)
       - run: npm run lint
+
+  jsdoc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm i
+      - run: npm run doc
+      - name: Commit JSDoc
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "docs/*"
+          message: "Generate JSDoc"
+          author_name: ${{ github.actor }}
+          author_email: ${{ github.actor }}@users.noreply.github.com
 
   build:
     runs-on: ubuntu-latest

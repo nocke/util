@@ -10,7 +10,8 @@
     "start": "./examples/demo.js",
     "test": "mocha --loader=esmock",
     "test:loop": "./script/saveloop . clear \"npm t $npm_config_test\"",
-    "lint": "eslint src test"
+    "lint": "eslint src test",
+    "doc": "jsdoc src/ -r -d docs"
   },
   "keywords": [
     "nodejs",
@@ -37,7 +38,8 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "esmock": "^2.1.0",
     "mocha": "^10.2.0",
-    "rimraf": "^4.1.2"
+    "rimraf": "^4.1.2",
+    "jsdoc": "^4.0.2"
   },
   "resolutions": {
     "esquery": "1.4.0"
