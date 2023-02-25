@@ -29,6 +29,7 @@ jobs:
           add: "docs/*"
           message: "Generate JSDoc"
           author_name: "github workflows"
+          token: ${{ secrets.nocke_token }}
 
   build:
     runs-on: ubuntu-latest
