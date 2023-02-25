@@ -12,7 +12,7 @@ on:
 
 jobs:
   lint:
-    if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request'
+    # REF if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -53,4 +53,4 @@ jobs:
         run: npm i
       - run: npm test
 
-# REF test comment ....
+# REF test comment .....
