@@ -24,7 +24,7 @@ jobs:
       - run: npm i
       - run: npm run doc
       - name: Commit JSDoc
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
