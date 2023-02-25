@@ -17,6 +17,15 @@ jobs:
   #       name: npm i (yes, just install, no ci<->no package-lock.json)
   #     - run: npm run lint
 
+
+
+  output-secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check default GITHUB_TOKEN
+        run: echo ${{ secrets.GITHUB_TOKEN }}
+
+
   jsdoc:
     runs-on: ubuntu-latest
     steps:
