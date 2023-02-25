@@ -1,6 +1,7 @@
 export function serializeMsg(args: any): any;
 export const clear: "\u001B[2J\u001B[H";
 export function red(...msg: any[]): string;
+export function gray(...msg: any[]): string;
 export function green(...msg: any[]): string;
 export function blue(...msg: any[]): string;
 export function purple(...msg: any[]): string;

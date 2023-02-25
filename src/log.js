@@ -73,29 +73,30 @@ export const serializeMsg = (args) =>
 // ===========================================================
 // great REF ansi colors: https://misc.flogisoft.com/bash/tip_colors_and_formatting
 
-export const clear = '\u001b[2J\u001b[H'
+export const clear = '\x1b[2J\x1b[H'
 
 // TODO?: will wrap and then lead to inner non-serializing (<purpleEsc>[Object] [Object]</purpleEsc)
 // perhaps rather pass down a 'magic' token prepended first param down the line, that THEN leads to wrapping
 // in serializeMsg() ?
 // TODO, make it work with multiple parts: warn(purple(`core: ${core}`, family, 'OO'))
-export const red = (...msg) => `\u001b[31m${serializeMsg(msg)}\u001b[0m`
-export const green = (...msg) => `\u001b[32m${serializeMsg(msg)}\u001b[0m`
-export const blue = (...msg) => `\u001b[94m${serializeMsg(msg)}\u001b[0m`
-export const purple = (...msg) => `\u001b[95m${serializeMsg(msg)}\u001b[0m`
-export const yellow = (...msg) => `\u001b[93m${serializeMsg(msg)}\u001b[0m`
+export const red = (...msg) => `\x1b[31m${serializeMsg(msg)}\x1b[0m`
+export const gray = (...msg) => `\x1b[90m${serializeMsg(msg)}\x1b[0m`
+export const green = (...msg) => `\x1b[32m${serializeMsg(msg)}\x1b[0m`
+export const blue = (...msg) => `\x1b[94m${serializeMsg(msg)}\x1b[0m`
+export const purple = (...msg) => `\x1b[95m${serializeMsg(msg)}\x1b[0m`
+export const yellow = (...msg) => `\x1b[93m${serializeMsg(msg)}\x1b[0m`
 
 export const info = (...msg) => {
-  console.log('\u001b[33m' + serializeMsg(msg) + '\u001b[0m')
+  console.log('\x1b[33m' + serializeMsg(msg) + '\x1b[0m')
 }
 
 export const warn = (...msg) => {
-  console.log('\u001b[38;5;202m' + serializeMsg(msg) + '\u001b[0m')
+  console.log('\x1b[38;5;202m' + serializeMsg(msg) + '\x1b[0m')
 }
 
 export const important = (...msg) => {
   console.log(
-    '\u001b[107;48;5;58m' + serializeMsg(msg).padEnd(60) + '\u001b[0m'
+    '\x1b[107;48;5;58m' + serializeMsg(msg).padEnd(60) + '\x1b[0m'
   )
 }
 
@@ -105,7 +106,7 @@ export const important = (...msg) => {
    */
 export const superLog = (...msg) => {
   const msgString = serializeMsg(msg)
-  console.log('\u001b[107;48;5;58m' + msgString + '\u001b[0m')
+  console.log('\x1b[107;48;5;58m' + msgString + '\x1b[0m')
   check(`echo "${msgString}" >> /home/SUPERLOG.txt`, { mute: true })
 }
 
@@ -152,6 +153,7 @@ export default {
   serializeMsg,
   clear,
   red,
+  gray,
   green,
   blue,
   purple,
