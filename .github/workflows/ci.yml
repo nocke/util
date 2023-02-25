@@ -4,60 +4,53 @@ on:
   push:
     branches:
       # - master
-      - 'fiddl*'
+      - "fiddl*"
+    tags:
+      - "v*.*.*"
   pull_request:
     branches: [master]
 
 jobs:
-  # lint:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - run: npm i jsdoc
-  #       name: npm i (yes, just install, no ci<->no package-lock.json)
-  #     - run: npm run lint
-
-
-
-  output-secrets:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check default GITHUB_TOKEN
-        run: echo ${{ secrets.GITHUB_TOKEN }}
-
-
-  jsdoc:
+  lint:
+    if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: npm i
+      - run: npm i jsdoc #  yes, just `npm install`, no `npm ci` <-> no package-lock.json
+      - run: npm run lint
+
+  jsdoc:
+    if: startsWith(github.ref, 'refs/tags/v') # build docs only on pushed versions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm i jdoc
       - run: npm run doc
       - name: Commit JSDoc
-        uses: EndBug/add-and-commit@v7
+        uses: EndBug/add-and-commit@v9
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # get version from environment variable
+          VERSION: ${{ env.VERSION }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          default_author: github_actions
           add: "docs/*"
-          author_name: github_actions
-          message: "update jsdocs"
+          message: "update jsdocs $VERSION"
 
-  # build:
-  #   runs-on: ubuntu-latest
-  #   #test comment
+  test:
+    runs-on: ubuntu-latest
 
-  #   strategy:
-  #     matrix:
-  #       node-version: 19.x   # later again [16.x, 19.x]
+    strategy:
+      matrix:
+        node-version: [ 19.x ] # later again [16.x, 19.x]
 
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Use Node.js ${{ matrix.node-version }}
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
-  #     - name: npm i (yes, just install, no package-lock.json)
-  #       run: npm i
-  #     - run: npm test
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm i (yes, just install, no package-lock.json)
+        run: npm i
+      - run: npm test
 
 # REF test comment ....
