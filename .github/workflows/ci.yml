@@ -28,8 +28,8 @@ jobs:
         with:
           add: "docs/*"
           message: "Generate JSDoc"
-          author_name: ${{ github.actor }}
-          author_email: ${{ github.actor }}@users.noreply.github.com
+          author_name: "github workflows"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   build:
     runs-on: ubuntu-latest
