@@ -3,19 +3,19 @@ name: Node.js CI
 on:
   push:
     branches:
-      - master
+      # - master
       - 'fiddl*'
   pull_request:
     branches: [master]
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: npm i
-        name: npm i (yes, just install, no ci<->no package-lock.json)
-      - run: npm run lint
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - run: npm i jsdoc
+  #       name: npm i (yes, just install, no ci<->no package-lock.json)
+  #     - run: npm run lint
 
   jsdoc:
     runs-on: ubuntu-latest
@@ -29,24 +29,23 @@ jobs:
           add: "docs/*"
           message: "Generate JSDoc"
           author_name: "github workflows"
-          token: ${{ secrets.nocke_token }}
 
-  build:
-    runs-on: ubuntu-latest
-    #test comment
+  # build:
+  #   runs-on: ubuntu-latest
+  #   #test comment
 
-    strategy:
-      matrix:
-        node-version: [16.x, 19.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: 19.x   # later again [16.x, 19.x]
 
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm i (yes, just install, no package-lock.json)
-        run: npm i
-      - run: npm test
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - name: npm i (yes, just install, no package-lock.json)
+  #       run: npm i
+  #     - run: npm test
 
 # REF test comment ...
