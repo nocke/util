@@ -37,6 +37,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           add: "docs/*"
           author_name: github_actions
           message: "update jsdocs"
@@ -59,4 +60,4 @@ jobs:
   #       run: npm i
   #     - run: npm test
 
-# REF test comment ...
+# REF test comment ....
