@@ -2,7 +2,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
+      - "test*"
+    tags:
+      - "**"
+
   pull_request:
     branches: [master]
 
@@ -11,17 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: npm i
-        name: npm i (yes, just install, no ci<->no package-lock.json)
+      - run: npm i lint #  yes, just `npm install`, no `npm ci` <-> no package-lock.json
       - run: npm run lint
 
-  build:
+  test:
     runs-on: ubuntu-latest
-    #test comment
 
     strategy:
       matrix:
-        node-version: [16.x, 19.x]
+        node-version: [ 12.x, 16.x, 19.x ]
 
     steps:
       - uses: actions/checkout@v3
@@ -32,6 +35,3 @@ jobs:
       - name: npm i (yes, just install, no package-lock.json)
         run: npm i
       - run: npm test
-
-# REF test comment
-
