@@ -16,8 +16,8 @@ jobs:
     steps:
       - name: Dump Variables
         run: |
-          echo "GitHub Event Name: ${GITHUB_EVENT_NAME}"
-          echo "GitHub Ref: ${GITHUB_REF}"
+          echo "GitHub Event Name: $GITHUB_EVENT_NAME"
+          echo "GitHub Ref: $GITHUB_REF"
         env:
           GITHUB_EVENT_NAME: ${{ toJson(github.event_name) }}
           GITHUB_REF: ${{ toJson(github.ref) }}
