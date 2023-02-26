@@ -16,6 +16,7 @@ declare namespace _default {
     export { serializeMsg };
     export { clear };
     export { red };
+    export { gray };
     export { green };
     export { blue };
     export { purple };

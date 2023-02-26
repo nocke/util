@@ -1,23 +1,21 @@
 {
   "include": [
-    "src/**/*"
+    "src/**/*.js"
+  ],
+  "exclude": [
+    "**/*.d.ts"
   ],
   "compilerOptions": {
-    // Tells TypeScript to read JS files, as
-    // normally they are ignored as source files
+    // REF   https://www.typescriptlang.org/docs/handbook/declaration-files/dts-from-js.html
+    // Tells TypeScript to read JS files, as normally they are ignored as source files
     "allowJs": true,
     // Generate d.ts files
     "declaration": true,
-    // This compiler run should
-    // only output d.ts files
+    // This compiler run should only output d.ts files
     "emitDeclarationOnly": true,
     // Types should go into this directory.
-    // Removing this would place the .d.ts files
-    // next to the .js files
-    "outDir": "dist",
-    // go to js file when using IDE functions like
-    // "Go to Definition" in VSCode
-    "declarationMap": true
-    // REF   https://www.typescriptlang.org/docs/handbook/declaration-files/dts-from-js.html
+    // no outDir places the .d.ts files next to the .js files (good!)
+    // go to js file when using IDE functions like "Go to Definition" in VSCode
+    "declarationMap": true,
   }
 }

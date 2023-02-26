@@ -1,4 +1,5 @@
 export class FailError extends Error {
+    constructor(message: any);
 }
 export function pass(...msg: any[]): void;
 export function fail(...msg: any[]): never;

@@ -1,4 +1,4 @@
-export function mainWrap(main: Function): void;
+export function mainWrap(main: any): void;
 declare namespace _default {
     export { mainWrap };
 }
