@@ -11,6 +11,17 @@ on:
     branches: [master]
 
 jobs:
+  dump-variables:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump Variables
+        run: |
+          echo "GitHub Event Name: ${GITHUB_EVENT_NAME}"
+          echo "GitHub Ref: ${GITHUB_REF}"
+        env:
+          GITHUB_EVENT_NAME: ${{ toJson(github.event_name) }}
+          GITHUB_REF: ${{ toJson(github.ref) }}
+
   lint:
     # REF if: github.ref == 'refs/heads/master' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
