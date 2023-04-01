@@ -1,8 +1,11 @@
 {
     "workbench.colorCustomizations": {
-        "sideBar.background": "#080A28"
+        "sideBar.background": "#080A28",
+        "tab.inactiveBackground": "#080A28"
     },
     "html.format.wrapLineLength": 200,
     "eslint.enable": true,
-    "editor.defaultFormatter": null
+    "editor.defaultFormatter": null,
+    // make font size independent \o/
+    "window.zoomLevel": 2
 }
