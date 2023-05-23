@@ -27,7 +27,7 @@ Originally written for a series of `barejs` setup scripts, for a full range of â
 ## Installation
 
 ```sh
-npm install @nocke/util
+npm install -S @nocke/util
 ```
 
 ## Usage
