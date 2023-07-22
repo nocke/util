@@ -13,6 +13,11 @@ export const mainWrap = (main) => {
   main()
     .then(
       () => {
+        // TODO, if we ever had a 2nd param config
+        // with a  runlog='<path>'
+        // → see barejs
+        //        guard(`echo "${scriptBasename} PASS" | tee -a /home/BARERUN.log`)
+
         process.exit(0)
       },
       (err) => {

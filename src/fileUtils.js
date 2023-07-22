@@ -55,6 +55,7 @@ export const groomDestPath = (filePath) => {
       'depot',
       'share',
       'common',
+      'mnt',
       'usr',
       'var',
       // considered root-ish
@@ -217,7 +218,6 @@ export const makeDirs = (...dirsAndOptions) => {
       warn('groom result: user, group', user + ':' + group)
 
       if (rootRights) {
-        ensureTrue(group === 'common', 'mkDirs: root-Option only allowed in “common-ish” dirs')
         guard(`chown root:root '${dirPath}'`)
       } else {
         guard(`chown ${user}:${group} '${dirPath}'`)
