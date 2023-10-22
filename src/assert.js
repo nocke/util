@@ -1,9 +1,9 @@
 'use strict'
 import fs from 'fs'
 import { exec } from 'child_process'
-import { serializeMsg } from './log.js'
+import { info, serializeMsg } from './log.js'
 import { isWindows, symbols } from './_common.js'
-import { check } from './execute.js'
+import { check, guard } from './execute.js'
 
 // make Errors a bit more specific (also in stacktrace)
 export class FailError extends Error {
@@ -142,6 +142,23 @@ export const ensureRoot = () => {
   }
 }
 
+export const ensureNonRoot = () => {
+  if (isWindows) {
+    if (check('net session > nul 2>&1', { mute: true }) === 0) {
+      fail('you are in an admin prompt, please run in a non-admin prompt')
+    }
+  } else {
+    // @ts-ignore
+    process.getuid() !== 0 || fail('you are root, run as a non-root')
+  }
+}
+
+export const ensureMachine = machineName => {
+  const actualMachineName = guard('uname -n', { mute: true, noPass: true }).trim()
+  ensureTrue(machineName === actualMachineName, `ensureMachine: machine name '${actualMachineName}' does not match expected machine name '${machineName}'.`)
+  pass(`ensureMachine: '${machineName}'`)
+}
+
 const validURL = /^(http[s]?:\/\/(www\.)?|ftp:\/\/(www\.)?|www\.){1}([0-9A-Za-z-.@:%_+~#=]+)+((\.[a-zA-Z]{2,3})+)(\/(.*))?(\?(.*))?/
 
 export const ensureValidURL = (url) => {
@@ -195,6 +212,8 @@ export default {
   ensureFileOrFolderOrLinkExists,
 
   ensureRoot,
+  ensureNonRoot,
+  ensureMachine,
 
   ensureWellFormedUser,
   ensureValidURL,

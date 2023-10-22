@@ -14,6 +14,8 @@ export function ensureFileOrFolderExists(path: any, ...msg: any[]): void;
 export function ensureFileOrFolderOrLinkExists(path: any, ...msg: any[]): void;
 export function ensureWellFormedUser(user: any, ...msg: any[]): void;
 export function ensureRoot(): void;
+export function ensureNonRoot(): void;
+export function ensureMachine(machineName: any): void;
 export function ensureValidURL(url: any): void;
 export function ensureFails(fn: any, ...msg: any[]): void;
 export function ensureRealObject(o: any): void;
@@ -33,6 +35,8 @@ declare namespace _default {
     export { ensureFileOrFolderExists };
     export { ensureFileOrFolderOrLinkExists };
     export { ensureRoot };
+    export { ensureNonRoot };
+    export { ensureMachine };
     export { ensureWellFormedUser };
     export { ensureValidURL };
     export { ensureFails };

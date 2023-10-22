@@ -4,14 +4,14 @@ import { appendFileSync, existsSync, lstatSync, writeFileSync } from 'fs'
 import { ensureEqual, ensureFileExists, ensureFolderExists, ensureTrue, pass, validateOptions } from './assert.js'
 import { check, guard } from './execute.js'
 import { isWindows, trim } from './_common.js'
-import { info, warn } from './log.js'
+import { gray, green, info, red, warn, yellow } from './log.js'
 
-/* returns free space on '/' as a number in Megabytews
- */
-export const getDiskUsageInfo = () => {
-  const memLine = guard('df -BM / | grep -w /', { mute: true })
-    .trim()
-    .split(/\s+/)
+/* returns free space on diskpath resp. '/' in megabytes and more information */
+export const getDiskUsageInfo = (diskpath = '/') => {
+  const output = guard(`df -BM ${diskpath}`, { mute: true, noPass: true })
+  const lines = output.split('\n')
+  const memLine = lines.reverse().find(line => line.includes(diskpath)).split(/\s+/)
+
   ensureEqual(memLine.length, 6, 'should split into 6 values')
   const r = {
     fileSystem: memLine[0],
@@ -26,6 +26,24 @@ export const getDiskUsageInfo = () => {
           typeof r.usedPercentage === 'number'
   )
   return r
+}
+
+export const getDiskUsageSummary = (diskpath = '/') => {
+  const diskUsage = getDiskUsageInfo(diskpath)
+
+  let colorFunc
+  if (diskUsage.usedPercentage < 70) {
+    colorFunc = green
+  } else if (diskUsage.usedPercentage < 80) {
+    colorFunc = yellow
+  } else {
+    colorFunc = red
+  }
+
+  const usedGB = (diskUsage.used / 1024).toFixed(0)
+  const totalGB = ((diskUsage.used + diskUsage.avail) / 1024).toFixed(0)
+
+  return gray(`disk space USED on ${diskpath}: `) + colorFunc(`${diskUsage.usedPercentage}% ( ${usedGB} GB / ${totalGB} GB )`)
 }
 
 /* some asserting if a good, harmless destination path
@@ -189,7 +207,6 @@ export const makeDirs = (...dirsAndOptions) => {
   } else { // otherwise just prepend to dirPaths
     dirPaths = dirsAndOptions
   }
-
   dirPaths.map(p => ensureTrue(typeof p === 'string', `makeDirs: ${p} is not a string`))
   validateOptions(config, ['root'])
   const rootRights = config.root === true
@@ -205,8 +222,7 @@ export const makeDirs = (...dirsAndOptions) => {
       }
     })
   } else {
-    // Linux fork  TODO test that foreach instead of map ok  (map wanted a return)
-    dirPaths.foreach(dirPath => {
+    dirPaths.forEach(dirPath => {
       const { _root, _dir, _base, _ext, user, group } = groomDestPath(dirPath)
 
       if (!existsSync(dirPath)) {
@@ -235,6 +251,7 @@ export const fileHasSnippet = (file, snippet) => {
 
 export default {
   getDiskUsageInfo,
+  getDiskUsageSummary,
   groomDestPath,
   commonize,
   writeFile,

@@ -11,22 +11,24 @@ export const guard = (cmd, config = {}) => {
     typeof config !== 'boolean',
     'forgot to change a mute param `true|false` to config object?'
   )
-  validateOptions(config, ['mute', 'timeout', 'errMsg'])
+  validateOptions(config, ['mute', 'noPass', 'timeout', 'errMsg'])
   const mute = config.mute === true
+  const noPass = config.noPass === true
   const errMsg = !!config.errMsg ? config.errMsg + '\n' : ''
   const timeout = config.timeout ? config.timeout : 120 * 1000
   try {
 
     // nodejs.org/api/child_process.html#child_processexecsynccommand-options
     const result = execSync(cmd, {
-      stdio: mute ? [] : 'pipe',
+      // stdin, stdout, stderr
+      stdio: mute ? ['ignore', 'pipe', 'ignore'] : ['pipe', 'pipe', 'inherit'],
       encoding: 'utf8',
       // 30 seconds (10 can be too short for luks matters,
-      // and somehow these times are actually ca 5× shorter than specified)
+      // and somehow these times are actually around 5× shorter than specified)
       timeout
     }).toString()
     const trimmedResult = trim(result, '\n')
-    pass(cmd)
+    if (!noPass) pass(cmd)
     if (!mute && result !== '' /* avoid moot blank lines */) { info(trimmedResult) }
     return trimmedResult
   } catch (error) {

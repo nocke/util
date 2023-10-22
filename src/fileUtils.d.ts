@@ -1,10 +1,11 @@
-export function getDiskUsageInfo(): {
+export function getDiskUsageInfo(diskpath?: string): {
     fileSystem: any;
     used: number;
     avail: number;
     usedPercentage: number;
     mountPoint: any;
 };
+export function getDiskUsageSummary(diskpath?: string): string;
 export function groomDestPath(filePath: any): {
     root: any;
     dir: any;
@@ -25,6 +26,7 @@ export function makeDirs(...dirsAndOptions: any[]): void;
 export function fileHasSnippet(file: any, snippet: any): boolean;
 declare namespace _default {
     export { getDiskUsageInfo };
+    export { getDiskUsageSummary };
     export { groomDestPath };
     export { commonize };
     export { writeFile };

@@ -47,4 +47,12 @@ import { purple, info, warn } from '@nocke/util'
 info(`hello`, ...)
 ```
 
-Personally, I favor the latter for simplicity in what follows. Btw: there is actually [a test](test/properExports.js#L72) to ensure, I did not forget an export on either singular or grouped export („default“) side.
+I somehow favor the latter for simplicity in the actual code.
+
+nb: there is actually [a test](test/properExports.js#L72) to ensure, I did not forget an export on either side (singular or grouped export aka „default“) side.
+
+## Build
+
+  npm run create-types
+
+creates/updates typescript types (.d.ts) for the library. While these are rather unspecific (this is not a typescript library, not requiring transpilation…), this is picked up by many IDEs, facilitating auto completion.
