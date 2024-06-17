@@ -37,8 +37,8 @@ export const guard = (cmd, config = {}) => {
       'guard() failed',
               `status: ${error.status}`,
               `message: ${errMsg}${error.message}`,
-              `stderr: ${error.stderr?.toString()}`,
-              `stdout: ${error.stdout?.toString()}`
+              `stderr: ${error.stderr?.toString() || 'no stderr output'}`,
+              `stdout: ${error.stdout?.toString() || 'no stdout output'}`
     )
   }
 }
