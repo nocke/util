@@ -21,6 +21,7 @@
     "sourceType": "module"
   },
   "rules": {
+    "comma-dangle": ["off"], // trailing commas to your liking
     "semi": [
       "warn",
       "never",
