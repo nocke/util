@@ -5,6 +5,7 @@
   "description": "NodeJS utilities and helpers – logging, asserts, coloring. In particular useful for writing scripts.",
   "type": "module",
   "author": "Frank Nocke",
+
   "scripts": {
     "clean": "rm -rf ./node_modules ./package-lock.json",
     "start": "./examples/demo.js",

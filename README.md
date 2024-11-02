@@ -51,6 +51,15 @@ I somehow favor the latter for simplicity in the actual code.
 
 nb: there is actually [a test](test/properExports.js#L72) to ensure, I did not forget an export on either side (singular or grouped export aka „default“) side.
 
+## Testing
+
+    npm run test -- test/logTesting.js
+
+### single test run:
+
+    npm run test -- test/logTesting.js
+
+
 ## Build
 
   npm run create-types

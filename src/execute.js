@@ -1,7 +1,7 @@
 'use strict'
-import { exec } from 'child_process'
+import { exec, execSync } from 'child_process'
 import { promisify } from 'util'
-import { ensureTrue, fail, pass, validateOptions } from './assert.js'
+import { ensureTrue, ensureWellFormedUser, fail, pass, validateOptions } from './assert.js'
 import { warn } from './log.js'
 import { trim } from './_common.js'
 import { info } from 'console'
@@ -11,7 +11,6 @@ const execAsync = promisify(exec)
 
 /* WARN: '&>/dev/null' might suppress error codes and wrongly return 0 (wrongly: ok) */
 export const guard = async (cmd, config = {}) => {
-  info('GUAAAAAAAAAAAAAAAAAAAAARD')
   ensureTrue(
     typeof config !== 'boolean',
     'forgot to change a mute param `true|false` to config object?'
@@ -79,10 +78,10 @@ export const userguard = (user, userCmd, config = {}) => {
   NOTE: by default returns error code (not result, like [user]guard())
   NOTE: on error code: 0 is 'falsy' but means everything is ok,
   truthy other value if unsuccessful
-
+  ██
   WARNING: '&>/dev/null' might suppress error codes and wrongly return 0 (everything ok)
   */
-export const check = async (cmd, config = {}) => {
+export const check = (cmd, config = {}) => {
   ensureTrue(
     config !== true,
     'forgot to change a mute true to config object'
@@ -90,11 +89,10 @@ export const check = async (cmd, config = {}) => {
   validateOptions(config, ['mute', 'timeout', 'getResult'])
   const mute = config && config.mute ? !!config.mute : false
   const timeout = config && config.timeout ? config.timeout : 120 * 1000
-  // get result instead of status code
   const getResult = config && config.getResult === true
 
   try {
-    const { stdout } = await execAsync(cmd, {
+    const stdout = execSync(cmd, {
       stdio: mute ? [] : 'pipe',
       encoding: 'utf8',
       timeout
@@ -104,7 +102,6 @@ export const check = async (cmd, config = {}) => {
     if (!mute) {
       pass(cmd)
       info('status (pass):', 0)
-      // avoid moot blank lines
       if (trimmedResult !== '') info(trimmedResult)
     }
     if (getResult) return trimmedResult
@@ -115,7 +112,7 @@ export const check = async (cmd, config = {}) => {
     if (!mute) {
       warn('result: ', trimmedResult)
       warn('cmd:    ', cmd)
-      warn('status: ', error.status) // TEMP
+      warn('status: ', error.status)
     }
     if (getResult) return trimmedResult
     return error.status
