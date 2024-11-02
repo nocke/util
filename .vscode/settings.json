@@ -1,6 +1,7 @@
 {
   "files.associations": {
     ".eslintrc.json": "jsonc",
+    "tsconfig.json": "jsonc",
     "REF*.json": "jsonc",
     "REF .eslintrc.json": "jsonc"
   },
