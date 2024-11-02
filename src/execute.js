@@ -1,16 +1,12 @@
 'use strict'
-import { exec, execSync } from 'child_process'
-import { promisify } from 'util'
+import { execSync } from 'child_process'
 import { ensureTrue, ensureWellFormedUser, fail, pass, validateOptions } from './assert.js'
 import { warn } from './log.js'
 import { trim } from './_common.js'
 import { info } from 'console'
 
-// Promisify exec for async usage
-const execAsync = promisify(exec)
-
 /* WARN: '&>/dev/null' might suppress error codes and wrongly return 0 (wrongly: ok) */
-export const guard = async (cmd, config = {}) => {
+export const guard = (cmd, config = {}) => {
   ensureTrue(
     typeof config !== 'boolean',
     'forgot to change a mute param `true|false` to config object?'
@@ -22,8 +18,8 @@ export const guard = async (cmd, config = {}) => {
   const timeout = config.timeout ? config.timeout : 120 * 1000
 
   try {
-    // Asynchronous execution of the command
-    const { stdout } = await execAsync(cmd, {
+    // Synchronous execution of the command
+    const stdout = execSync(cmd, {
       timeout,
       stdio: mute ? ['ignore', 'pipe', 'ignore'] : ['pipe', 'pipe', 'inherit'],
       encoding: 'utf8',
@@ -37,7 +33,7 @@ export const guard = async (cmd, config = {}) => {
   } catch (error) {
     fail(
       'guard() failed',
-      `status: ${error.code}`,
+      `status: ${error.status}`,
       `message: ${errMsg}${error.message}`,
       `stderr: ${error.stderr?.toString() || 'no stderr output'}`,
       `stdout: ${error.stdout?.toString() || 'no stdout output'}`
