@@ -3,7 +3,7 @@ export class FailError extends Error {
 }
 export function pass(...msg: any[]): void;
 export function fail(...msg: any[]): never;
-export function gracefulFail(...msg: any[]): never;
+export function gracefulFail(...msg: any[]): void;
 export function ensureTrue(value: any, ...msg: any[]): void;
 export function ensureFalse(value: any, ...msg: any[]): void;
 export function ensureTruthy(value: any, ...msg: any[]): void;
