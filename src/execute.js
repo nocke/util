@@ -10,7 +10,7 @@ import { info } from 'console'
 const execAsync = promisify(exec)
 
 /* WARN: '&>/dev/null' might suppress error codes and wrongly return 0 (wrongly: ok) */
-export const guard = async(cmd, config = {}) => {
+export const guard = async (cmd, config = {}) => {
   info('GUAAAAAAAAAAAAAAAAAAAAARD')
   ensureTrue(
     typeof config !== 'boolean',
@@ -82,7 +82,7 @@ export const userguard = (user, userCmd, config = {}) => {
 
   WARNING: '&>/dev/null' might suppress error codes and wrongly return 0 (everything ok)
   */
-export const check = async(cmd, config = {}) => {
+export const check = async (cmd, config = {}) => {
   ensureTrue(
     config !== true,
     'forgot to change a mute true to config object'

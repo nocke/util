@@ -6,11 +6,12 @@
   "type": "module",
   "author": "Frank Nocke",
   "scripts": {
-    "clean": "rimraf node_modules/",
+    "clean": "rm -rf ./node_modules ./package-lock.json",
     "start": "./examples/demo.js",
     "test": "mocha --loader=esmock",
     "test:loop": "./script/saveloop . clear \"npm t $npm_config_test\"",
     "lint": "eslint src test",
+    "lint:fix": "eslint src test --fix",
     "create-types": "rm src/*.d.ts*; tsc"
   },
   "keywords": [
@@ -33,12 +34,9 @@
   "main": "main.js",
   "devDependencies": {
     "chai": "^4.3.7",
-    "eslint": "^8.34.0",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-unused-imports": "^2.0.0",
+    "eslint": "^9.14.0",
     "esmock": "^2.1.0",
     "mocha": "^10.2.0",
-    "rimraf": "^4.1.2",
     "typescript": "^4.9.5"
   },
   "resolutions": {
@@ -48,6 +46,10 @@
     " ↑ this is adressing a very current bug in a eslint dependency",
     " REF https://github.com/eslint/eslint/issues/16896 "
   ],
+  "_": " ↓ fixes inflight@1.0.6 deprecation/leak warnings – https://stackoverflow.com/a/78799034",
+  "overrides": {
+    "glob": "^9"
+  },
   "engines": {
     "node": ">=14"
   }

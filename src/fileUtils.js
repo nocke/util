@@ -80,7 +80,7 @@ export const groomDestPath = (filePath) => {
       'root',
       'etc'
     ].includes(segments[0]),
-          `uncommon top-level path '${segments[0]}' in ${filePath}`
+    `uncommon top-level path '${segments[0]}' in ${filePath}`
   )
 
   let user = 'root' // assume for now
@@ -156,11 +156,11 @@ export const rsyncFolder = (src, dest, config = {}) => {
 
   ensureTrue(
     src.slice(-1) === '/',
-          `src MUST have trailing slash, '${src}' does not`
+    `src MUST have trailing slash, '${src}' does not`
   )
   ensureTrue(
     dest.slice(-1) !== '/',
-          `dest MUST NOT have trailing slash, '${src}' does not`
+    `dest MUST NOT have trailing slash, '${src}' does not`
   )
 
   const { _root, _dir, _base, _ext, user, group } = groomDestPath(dest)

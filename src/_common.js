@@ -48,7 +48,7 @@ export const trim = (str, ch) => {
 export const ucFirst = ([first = '', ...rest]) => [first.toUpperCase(), ...rest].join('')
 
 // remember to use `await` when calling this function!
-export const sleep = async(ms) => {
+export const sleep = async (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
@@ -74,32 +74,32 @@ export const iterate = (...argsAndFn) => {
   )
 
   switch (args.length) {
-    case 1:
-      for (const a0 of args[0]) {
-        info(`iterate ${a0} --------`)
-        fn(a0)
+  case 1:
+    for (const a0 of args[0]) {
+      info(`iterate ${a0} --------`)
+      fn(a0)
+    }
+    break
+  case 2:
+    for (const a0 of args[0]) {
+      for (const a1 of args[1]) {
+        info(`iterate ${a0} × ${a1} --------`)
+        fn(a0, a1)
       }
-      break
-    case 2:
-      for (const a0 of args[0]) {
-        for (const a1 of args[1]) {
-          info(`iterate ${a0} × ${a1} --------`)
-          fn(a0, a1)
+    }
+    break
+  case 3:
+    for (const a0 of args[0]) {
+      for (const a1 of args[1]) {
+        for (const a2 of args[2]) {
+          info(`iterate ${a0} × ${a1} × ${a2} --------`)
+          fn(a0, a1, a2)
         }
       }
-      break
-    case 3:
-      for (const a0 of args[0]) {
-        for (const a1 of args[1]) {
-          for (const a2 of args[2]) {
-            info(`iterate ${a0} × ${a1} × ${a2} --------`)
-            fn(a0, a1, a2)
-          }
-        }
-      }
-      break
-    default:
-      fail('that many args not yet implemented')
+    }
+    break
+  default:
+    fail('that many args not yet implemented')
   }
 }
 

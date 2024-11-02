@@ -129,7 +129,7 @@ export const loggedMainWrap = (main) => {
     .then(
       () => {
         // TODO: only play on main wraps taking longer than 20 seconds (nerves…)
-        if (doSuperLog) exec('aplay -q ./util/sounds/StarWars3.wav &')
+        if (doSuperLog ) exec('aplay -q ./util/sounds/StarWars3.wav &')
         info('\x1b[42;1m' + `  DONE  ${scriptPath}`.padEnd(padWidth) + '\x1b[0m')
         if (doSuperLog) superLog(`SUCCESS ${scriptBasename}`)
         process.exit(0)

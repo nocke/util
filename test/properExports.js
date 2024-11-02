@@ -64,9 +64,9 @@ describe(autoSuiteName(import.meta.url),
 
       preExistingExports.forEach(prior => {
         assert.exists(existingExports[prior],
-            `prior export '${prior}' no longer gets exported DIRECTLY`)
+          `prior export '${prior}' no longer gets exported DIRECTLY`)
         assert.exists(existingExports.default[prior],
-            `prior export '${prior}' no longer gets exported IN DEFAULT`)
+          `prior export '${prior}' no longer gets exported IN DEFAULT`)
       })
 
     })

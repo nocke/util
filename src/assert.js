@@ -1,7 +1,7 @@
 'use strict'
 import fs from 'fs'
 import { exec } from 'child_process'
-import { info, serializeMsg } from './log.js'
+import { serializeMsg, warn } from './log.js'
 import { isWindows, symbols } from './_common.js'
 import { check, guard } from './execute.js'
 
@@ -47,6 +47,12 @@ export const fail = (...msg) => {
   // process.exit(1);
 }
 
+// exit with just an error message (no stacktrace)
+// used for more trivial user errors
+export const gracefulFail = (...msg) => {
+  warn(msg)
+  process.exit(1)
+}
 
 // ===========================================================
 // ensure Functions (asserts)
@@ -67,8 +73,8 @@ export const ensureTruthy = (value, ...msg) => {
 export const ensureEqual = (shouldValue, isValue, ...msg) => {
   shouldValue === isValue ||
           fail(
-              `ensureEqual(): shouldValue '${shouldValue}' (${typeof shouldValue}) does not match isValue '${isValue}' (${typeof isValue})`,
-              ...msg
+            `ensureEqual(): shouldValue '${shouldValue}' (${typeof shouldValue}) does not match isValue '${isValue}' (${typeof isValue})`,
+            ...msg
           )
 }
 
@@ -84,13 +90,13 @@ export const ensureString = (value, ...msg) => {
 export const ensureFileExists = (path, ...msg) => {
   ensureTrue(
     fs.existsSync(path),
-            `ensureFileExists: no such file '${path}'`,
-            ...msg
+    `ensureFileExists: no such file '${path}'`,
+    ...msg
   )
   ensureTrue(
     fs.lstatSync(path).isFile(),
-            `ensureFileExists: '${path}' is a dir (should be a file)`,
-            ...msg
+    `ensureFileExists: '${path}' is a dir (should be a file)`,
+    ...msg
   )
 }
 
@@ -98,36 +104,36 @@ export const ensureFileExists = (path, ...msg) => {
 export const ensureFolderExists = (path, ...msg) => {
   ensureTrue(
     fs.existsSync(path),
-            `ensureFolderExists: no such directory '${path}'`,
-            ...msg
+    `ensureFolderExists: no such directory '${path}'`,
+    ...msg
   )
   ensureTrue(
     fs.lstatSync(path).isDirectory(),
-            `ensureFolderExists: '${path}' is a file, not a directory)`,
-            ...msg
+    `ensureFolderExists: '${path}' is a file, not a directory)`,
+    ...msg
   )
 }
 
 export const ensureFileOrFolderExists = (path, ...msg) => {
   ensureTrue(
     fs.existsSync(path),
-          `ensureFileExists: no such file/folder '${path}'`,
-          ...msg
+    `ensureFileExists: no such file/folder '${path}'`,
+    ...msg
   )
 }
 
 export const ensureFileOrFolderOrLinkExists = (path, ...msg) => {
   const stat = fs.lstatSync(path)
   ensureTrue(stat.isFile() || stat.isDirectory() || stat.isSymbolicLink(),
-          `ensureFileExists: no such file/folder/link '${path}'`,
-          ...msg
+    `ensureFileExists: no such file/folder/link '${path}'`,
+    ...msg
   )
 }
 
 export const ensureWellFormedUser = (user, ...msg) => {
   ensureTrue(
     /^[a-z]*$/.test(user),
-          `not a valid user '${user}', possibly a command?`, ...msg
+    `not a valid user '${user}', possibly a command?`, ...msg
   )
 }
 
@@ -180,7 +186,7 @@ export const ensureFails = (fn, ...msg) => {
 export const ensureRealObject = (o) => {
   ensureTrue(
     typeof o === 'object' && o !== null && !Array.isArray(o),
-        `not a real object (not counting null, array): ${o}`
+    `not a real object (not counting null, array): ${o}`
   )
 }
 
@@ -199,6 +205,7 @@ export default {
 
   pass,
   fail,
+  gracefulFail,
 
   ensureTrue,
   ensureFalse,

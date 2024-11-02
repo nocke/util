@@ -8,7 +8,7 @@ import { info } from './log.js'
 /* writes a dconf for a particular user
    yes, tricky it is. Needs the help of a shell script.
 */
-export const applyDconf = async(user, dconfFile) => {
+export const applyDconf = async (user, dconfFile) => {
 
   ensureWellFormedUser(user)
   const userID = parseInt(check(`id -u ${user}`, { getResult: true, mute: true }))

@@ -1,7 +1,7 @@
-import { assert } from 'chai'
+// TODO import { assert } from 'chai'
 
 // ↓ going through main export (not including specifc module) on purpose
-import { fail, important, info, warn } from '../main.js'
+import { important, info, warn } from '../main.js'
 
 /*
    ensure nothing got forgotten, when moving this into a util library

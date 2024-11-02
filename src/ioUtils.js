@@ -2,7 +2,7 @@
 
 import readline from 'readline'
 
-export const getInput = async(
+export const getInput = async (
   msg /* COULDDO: , wipeout=false, hash=undefined */
 ) => {
   // note: being inside async ensures properly going out of scope, ensuring main ends properly
@@ -22,7 +22,7 @@ export const getInput = async(
 // • earlier if key pressed
 //
 // @returns '' if no key pressed, key character otherwise
-export const sleepWithKeypress = async(ms) => new Promise(resolve => {
+export const sleepWithKeypress = async (ms) => new Promise(resolve => {
   const timer = setTimeout(() => {
     rl.close()
     resolve('')

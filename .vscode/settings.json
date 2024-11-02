@@ -1,6 +1,8 @@
 {
   "files.associations": {
-    ".eslintrc.json": "jsonc"
+    ".eslintrc.json": "jsonc",
+    "REF*.json": "jsonc",
+    "REF .eslintrc.json": "jsonc"
   },
   "workbench.colorCustomizations": {
     "sideBar.background": "#080A28",
