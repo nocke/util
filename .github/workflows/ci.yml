@@ -1,4 +1,4 @@
-name: Node.js CI
+name: "@nocke/util Github Actions"
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: npm i lint #  yes, just `npm install`, no `npm ci` <-> no package-lock.json
+      - run: npm i #  yes, just `npm install`, no `npm ci` <-> no package-lock.json
       - run: npm run lint
 
   test:
@@ -24,7 +24,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 16.x, 19.x ]
+        node-version: [ 20.x ]
 
     steps:
       - uses: actions/checkout@v3
