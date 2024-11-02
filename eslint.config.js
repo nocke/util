@@ -1,29 +1,25 @@
 import globals from 'globals'
 import js from '@eslint/js'
 
-// needed?!?
-// import unusedImports from 'eslint-plugin-unused-imports'
-
-
 // REF <-> /depot/PUBLIC/@nocke/syncdocs/eslint.config.js
-// interesting REF: https://github.com/microsoft/vscode-eslint/blob/main/playgrounds/flat-config/eslint.config.js
 
 export default [
+  {
+    ignores: ['**/*.d.ts'],
+  },
+
   js.configs.recommended, // <=> „extends“
   {
     'files': [
       '**/*.js',
       '**/*.ts'
     ],
-    // plugins: {
-    //   unusedImports
-    // },
     'languageOptions': {
       'sourceType': 'module',
       'globals': {
         ...globals.node,
         ...globals.mocha,
-        ...globals.es6,
+        ...globals.es6
       }
     },
     'rules': {
@@ -36,7 +32,7 @@ export default [
       ],
       'no-tabs': 'error',
       'indent': [
-        'error',
+        'warn',
         2
       ],
       'linebreak-style': [
