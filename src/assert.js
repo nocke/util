@@ -50,7 +50,7 @@ export const fail = (...msg) => {
 // exit with just an error message (no stacktrace)
 // used for more trivial user errors
 export const gracefulFail = (...msg) => {
-  warn(msg)
+  warn(...msg)
   process.exit(1)
 }
 
