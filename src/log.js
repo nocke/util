@@ -75,6 +75,8 @@ export const serializeMsg = (args) =>
 
 export const clear = '\x1b[2J\x1b[H'
 
+// TODO: a loglevel!
+
 // TODO?: will wrap and then lead to inner non-serializing (<purpleEsc>[Object] [Object]</purpleEsc)
 // perhaps rather pass down a 'magic' token prepended first param down the line, that THEN leads to wrapping
 // in serializeMsg() ?

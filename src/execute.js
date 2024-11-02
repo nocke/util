@@ -1,12 +1,17 @@
 'use strict'
-import { execSync } from 'child_process'
-import { ensureTrue, ensureWellFormedUser, fail, pass, validateOptions } from './assert.js'
+import { exec } from 'child_process'
+import { promisify } from 'util'
+import { ensureTrue, fail, pass, validateOptions } from './assert.js'
 import { warn } from './log.js'
 import { trim } from './_common.js'
 import { info } from 'console'
 
+// Promisify exec for async usage
+const execAsync = promisify(exec)
+
 /* WARN: '&>/dev/null' might suppress error codes and wrongly return 0 (wrongly: ok) */
-export const guard = (cmd, config = {}) => {
+export const guard = async(cmd, config = {}) => {
+  info('GUAAAAAAAAAAAAAAAAAAAAARD')
   ensureTrue(
     typeof config !== 'boolean',
     'forgot to change a mute param `true|false` to config object?'
@@ -16,33 +21,32 @@ export const guard = (cmd, config = {}) => {
   const noPass = config.noPass === true
   const errMsg = !!config.errMsg ? config.errMsg + '\n' : ''
   const timeout = config.timeout ? config.timeout : 120 * 1000
-  try {
 
-    // nodejs.org/api/child_process.html#child_processexecsynccommand-options
-    const result = execSync(cmd, {
-      // stdin, stdout, stderr
+  try {
+    // Asynchronous execution of the command
+    const { stdout } = await execAsync(cmd, {
+      timeout,
       stdio: mute ? ['ignore', 'pipe', 'ignore'] : ['pipe', 'pipe', 'inherit'],
       encoding: 'utf8',
-      // 30 seconds (10 can be too short for luks matters,
-      // and somehow these times are actually around 5× shorter than specified)
-      timeout
-    }).toString()
-    const trimmedResult = trim(result, '\n')
+    })
+
+    const trimmedResult = trim(stdout.toString(), '\n')
     if (!noPass) pass(cmd)
-    if (!mute && result !== '' /* avoid moot blank lines */) { info(trimmedResult) }
+    if (!mute && trimmedResult !== '') { info(trimmedResult) }
+
     return trimmedResult
   } catch (error) {
-    // fail will alreadey dump all that. warn(error)
     fail(
       'guard() failed',
-              `status: ${error.status}`,
-              `message: ${errMsg}${error.message}`,
-              `stderr: ${error.stderr?.toString() || 'no stderr output'}`,
-              `stdout: ${error.stdout?.toString() || 'no stdout output'}`
+      `status: ${error.code}`,
+      `message: ${errMsg}${error.message}`,
+      `stderr: ${error.stderr?.toString() || 'no stderr output'}`,
+      `stdout: ${error.stdout?.toString() || 'no stdout output'}`
     )
   }
 }
 
+/* Userguard function unchanged */
 export const userguard = (user, userCmd, config = {}) => {
   ensureTrue(
     config !== true,
@@ -54,7 +58,7 @@ export const userguard = (user, userCmd, config = {}) => {
   ensureWellFormedUser(user)
 
   // user will have (most of) its typical env varibles
-  // NOTE: user will have it's home dir as current path
+  // NOTE: user will have its home dir as current path
 
   // escape quotes in the command, since it gets put into outer quotes
   const escapedUserCmd = userCmd.replace(/"/g, '\\"')
@@ -74,11 +78,11 @@ export const userguard = (user, userCmd, config = {}) => {
 /* like guard, except, returns true or false (thus not “enforcing”)
   NOTE: by default returns error code (not result, like [user]guard())
   NOTE: on error code: 0 is 'falsy' but means everything is ok,
-  truthy other value if unsucessful
+  truthy other value if unsuccessful
 
   WARNING: '&>/dev/null' might suppress error codes and wrongly return 0 (everything ok)
   */
-export const check = (cmd, config = {}) => {
+export const check = async(cmd, config = {}) => {
   ensureTrue(
     config !== true,
     'forgot to change a mute true to config object'
@@ -88,14 +92,15 @@ export const check = (cmd, config = {}) => {
   const timeout = config && config.timeout ? config.timeout : 120 * 1000
   // get result instead of status code
   const getResult = config && config.getResult === true
-  let result = ''
+
   try {
-    result = execSync(cmd, {
+    const { stdout } = await execAsync(cmd, {
       stdio: mute ? [] : 'pipe',
       encoding: 'utf8',
       timeout
-    }).toString()
-    const trimmedResult = trim(result, '\n')
+    })
+
+    const trimmedResult = trim(stdout.toString(), '\n')
     if (!mute) {
       pass(cmd)
       info('status (pass):', 0)
@@ -106,7 +111,7 @@ export const check = (cmd, config = {}) => {
     return 0
   } catch (error) {
     if (error.code === 'ETIMEDOUT') warn('check: cause was TIMEOUT!')
-    const trimmedResult = trim(result, '\n')
+    const trimmedResult = trim(error.stdout?.toString() || '', '\n')
     if (!mute) {
       warn('result: ', trimmedResult)
       warn('cmd:    ', cmd)
